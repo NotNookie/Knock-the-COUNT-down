@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Technique" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/technique_resource.gd" id="1_jab"]
+
+[resource]
+script = ExtResource("1_jab")
+id = "jab"
+display_name = "Jab"
+stat_type = 1
+base_damage = 6.0
+stamina_cost = 3.0
+tags = PackedStringArray()

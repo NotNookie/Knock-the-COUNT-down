@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FighterStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/style_resource.gd" id="1_franken"]
+
+[resource]
+script = ExtResource("1_franken")
+id = "franken"
+display_name = "Franken Style"
+monster_flavor = "Developed to bring down towering monsters through raw force."
+primary_stat = 0
+behavior_weights = {
+"aggression": 0.6,
+"patience": 0.2,
+"stamina_caution": 0.2,
+"finisher_instinct": 0.9
+}

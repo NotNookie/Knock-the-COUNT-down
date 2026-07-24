@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FighterStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/style_resource.gd" id="1_ghost"]
+
+[resource]
+script = ExtResource("1_ghost")
+id = "ghost"
+display_name = "Ghost Style"
+monster_flavor = "Elusive movements that make attacks seem to pass through you."
+primary_stat = 2
+behavior_weights = {
+"aggression": 0.3,
+"patience": 0.8,
+"stamina_caution": 0.4,
+"finisher_instinct": 0.4
+}

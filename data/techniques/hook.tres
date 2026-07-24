@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Technique" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://resources/technique_resource.gd" id="1_hook"]
+[ext_resource type="Resource" path="res://data/styles/franken.tres" id="2_hook_style"]
+
+[resource]
+script = ExtResource("1_hook")
+id = "hook"
+display_name = "Hook"
+stat_type = 0
+required_style = ExtResource("2_hook_style")
+base_damage = 14.0
+stamina_cost = 8.0
+unlock_cost = 20
+tags = PackedStringArray("power_based")

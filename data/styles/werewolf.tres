@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FighterStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/style_resource.gd" id="1_werewolf"]
+
+[resource]
+script = ExtResource("1_werewolf")
+id = "werewolf"
+display_name = "Werewolf Style"
+monster_flavor = "Agile hunters who rely on speed and footwork."
+primary_stat = 1
+behavior_weights = {
+"aggression": 0.8,
+"patience": 0.1,
+"stamina_caution": 0.6,
+"finisher_instinct": 0.5
+}

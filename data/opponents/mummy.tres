@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Opponent" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://resources/opponent_resource.gd" id="1_mummy"]
+[ext_resource type="Resource" path="res://data/techniques/cross.tres" id="2_mummy_cross"]
+[ext_resource type="Resource" path="res://data/techniques/hook.tres" id="3_mummy_hook"]
+[ext_resource type="Resource" path="res://data/techniques/uppercut.tres" id="4_mummy_uppercut"]
+
+[resource]
+script = ExtResource("1_mummy")
+id = "mummy"
+display_name = "The Mummy"
+tier = "miniboss"
+base_stats = {
+"power": 8,
+"speed": 3,
+"vitality": 12
+}
+traits = PackedStringArray("ancient_resilience", "curse_of_decay")
+technique_pool = [ExtResource("2_mummy_cross"), ExtResource("3_mummy_hook"), ExtResource("4_mummy_uppercut")]

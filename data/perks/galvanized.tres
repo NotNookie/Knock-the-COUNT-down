@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/perk_resource.gd" id="1_galvanized"]
+
+[resource]
+script = ExtResource("1_galvanized")
+id = "galvanized"
+display_name = "Galvanized"
+description = "Reanimated by raw electric force -- his punches don't stop, they surge. Hooks and Uppercuts deal bonus damage."
+style_tag = "franken"
+effect_type = 0
+effect_value = 0.2
+affects_tag = "power_based"

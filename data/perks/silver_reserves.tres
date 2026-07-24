@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/perk_resource.gd" id="1_silver_reserves"]
+
+[resource]
+script = ExtResource("1_silver_reserves")
+id = "silver_reserves"
+display_name = "Silver Reserves"
+description = "Every good hunter keeps something in the tank for the long chase. Recover extra stamina between rounds."
+style_tag = "hunter"
+effect_type = 3
+effect_value = 10.0
+affects_tag = ""

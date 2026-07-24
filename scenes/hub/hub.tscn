@@ -1,0 +1,342 @@
+[gd_scene load_steps=4 format=3 uid="uid://u1w2it5lpq54"]
+
+[ext_resource type="Script" uid="uid://cnk0vqmc7ck07" path="res://scenes/hub/hub.gd" id="1_hub"]
+[ext_resource type="Texture2D" uid="uid://d20544cf0ybac" path="res://assets/background.png" id="2_background"]
+[ext_resource type="Texture2D" uid="uid://dblbiigydq0rq" path="res://assets/sprites/main_rat-removebg-preview.png" id="3_character"]
+
+[node name="Hub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hub")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CharacterSprite" type="TextureRect" parent="."]
+layout_mode = 1
+offset_left = 293.0
+offset_top = 243.0
+offset_right = 357.0
+offset_bottom = 307.0
+texture = ExtResource("3_character")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="ArenaButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 156.0
+offset_bottom = 44.0
+text = "Enter the Arena"
+
+[node name="TrainerButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 468.0
+offset_top = 16.0
+offset_right = 624.0
+offset_bottom = 44.0
+text = "Trainer"
+
+[node name="GoldLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 268.0
+offset_top = 16.0
+offset_right = 372.0
+offset_bottom = 40.0
+text = "Gold: 0"
+horizontal_alignment = 1
+
+[node name="StatsPopup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Backing" type="ColorRect" parent="StatsPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="StatsPopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -140.0
+offset_right = 220.0
+offset_bottom = 140.0
+
+[node name="VBox" type="VBoxContainer" parent="StatsPopup/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="StatsPopup/Panel/VBox"]
+layout_mode = 2
+text = "Trainer"
+horizontal_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox"]
+layout_mode = 2
+text = "Level 1  (XP: 0/40)"
+
+[node name="StatPointsLabel" type="Label" parent="StatsPopup/Panel/VBox"]
+layout_mode = 2
+text = "Stat Points: 0"
+
+[node name="StatsBox" type="VBoxContainer" parent="StatsPopup/Panel/VBox"]
+layout_mode = 2
+
+[node name="PowerRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/PowerRow"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Power: 1"
+
+[node name="SpendButton" type="Button" parent="StatsPopup/Panel/VBox/StatsBox/PowerRow"]
+layout_mode = 2
+disabled = true
+text = "+1"
+
+[node name="SpeedRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/SpeedRow"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Speed: 1"
+
+[node name="SpendButton" type="Button" parent="StatsPopup/Panel/VBox/StatsBox/SpeedRow"]
+layout_mode = 2
+disabled = true
+text = "+1"
+
+[node name="VitalityRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/VitalityRow"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Vitality: 1"
+
+[node name="SpendButton" type="Button" parent="StatsPopup/Panel/VBox/StatsBox/VitalityRow"]
+layout_mode = 2
+disabled = true
+text = "+1"
+
+[node name="CloseButton" type="Button" parent="StatsPopup/Panel/VBox"]
+layout_mode = 2
+text = "Close"
+
+[node name="TrainerPopup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Backing" type="ColorRect" parent="TrainerPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="TrainerPopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -150.0
+offset_right = 260.0
+offset_bottom = 150.0
+
+[node name="VBox" type="VBoxContainer" parent="TrainerPopup/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+text = "Trainer"
+horizontal_alignment = 1
+
+[node name="CurrencyLabel" type="Label" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+text = "Gold: 0"
+
+[node name="StylesBox" type="VBoxContainer" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+
+[node name="FrankenRow" type="HBoxContainer" parent="TrainerPopup/Panel/VBox/StylesBox"]
+layout_mode = 2
+
+[node name="StyleButton" type="Button" parent="TrainerPopup/Panel/VBox/StylesBox/FrankenRow"]
+layout_mode = 2
+disabled = true
+text = "Buy Franken Style (30 gold)"
+
+[node name="WerewolfRow" type="HBoxContainer" parent="TrainerPopup/Panel/VBox/StylesBox"]
+layout_mode = 2
+
+[node name="StyleButton" type="Button" parent="TrainerPopup/Panel/VBox/StylesBox/WerewolfRow"]
+layout_mode = 2
+disabled = true
+text = "Buy Werewolf Style (30 gold)"
+
+[node name="GhostRow" type="HBoxContainer" parent="TrainerPopup/Panel/VBox/StylesBox"]
+layout_mode = 2
+
+[node name="StyleButton" type="Button" parent="TrainerPopup/Panel/VBox/StylesBox/GhostRow"]
+layout_mode = 2
+disabled = true
+text = "Buy Ghost Style (30 gold)"
+
+[node name="HunterRow" type="HBoxContainer" parent="TrainerPopup/Panel/VBox/StylesBox"]
+layout_mode = 2
+
+[node name="StyleButton" type="Button" parent="TrainerPopup/Panel/VBox/StylesBox/HunterRow"]
+layout_mode = 2
+disabled = true
+text = "Buy Hunter Style (30 gold)"
+
+[node name="TreeLabel" type="Label" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+text = "Skill Tree (active style + universal)"
+
+[node name="TreeScroll" type="ScrollContainer" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="TreeRow" type="HBoxContainer" parent="TrainerPopup/Panel/VBox/TreeScroll"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CloseButton" type="Button" parent="TrainerPopup/Panel/VBox"]
+layout_mode = 2
+text = "Close"
+
+[node name="PerksPopup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Backing" type="ColorRect" parent="PerksPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="PerksPopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -150.0
+offset_right = 220.0
+offset_bottom = 150.0
+
+[node name="VBox" type="VBoxContainer" parent="PerksPopup/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="PerksPopup/Panel/VBox"]
+layout_mode = 2
+text = "Perk Den"
+horizontal_alignment = 1
+
+[node name="PerksBox" type="VBoxContainer" parent="PerksPopup/Panel/VBox"]
+layout_mode = 2
+
+[node name="GalvanizedRow" type="HBoxContainer" parent="PerksPopup/Panel/VBox/PerksBox"]
+layout_mode = 2
+
+[node name="PerkButton" type="Button" parent="PerksPopup/Panel/VBox/PerksBox/GalvanizedRow"]
+layout_mode = 2
+disabled = true
+text = "Galvanized (Locked)"
+
+[node name="FeralInstinctRow" type="HBoxContainer" parent="PerksPopup/Panel/VBox/PerksBox"]
+layout_mode = 2
+
+[node name="PerkButton" type="Button" parent="PerksPopup/Panel/VBox/PerksBox/FeralInstinctRow"]
+layout_mode = 2
+disabled = true
+text = "Feral Instinct (Locked)"
+
+[node name="UnfinishedBusinessRow" type="HBoxContainer" parent="PerksPopup/Panel/VBox/PerksBox"]
+layout_mode = 2
+
+[node name="PerkButton" type="Button" parent="PerksPopup/Panel/VBox/PerksBox/UnfinishedBusinessRow"]
+layout_mode = 2
+disabled = true
+text = "Unfinished Business (Locked)"
+
+[node name="SilverReservesRow" type="HBoxContainer" parent="PerksPopup/Panel/VBox/PerksBox"]
+layout_mode = 2
+
+[node name="PerkButton" type="Button" parent="PerksPopup/Panel/VBox/PerksBox/SilverReservesRow"]
+layout_mode = 2
+disabled = true
+text = "Silver Reserves (Locked)"
+
+[node name="BloodInTheWaterRow" type="HBoxContainer" parent="PerksPopup/Panel/VBox/PerksBox"]
+layout_mode = 2
+
+[node name="PerkButton" type="Button" parent="PerksPopup/Panel/VBox/PerksBox/BloodInTheWaterRow"]
+layout_mode = 2
+text = "Equip Blood in the Water"
+
+[node name="CloseButton" type="Button" parent="PerksPopup/Panel/VBox"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="ArenaButton" to="." method="_on_arena_button_pressed"]
+[connection signal="pressed" from="TrainerButton" to="." method="_on_trainer_button_pressed"]

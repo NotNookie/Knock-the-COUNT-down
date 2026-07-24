@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Opponent" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://resources/opponent_resource.gd" id="1_invisible_man"]
+[ext_resource type="Resource" path="res://data/techniques/jab.tres" id="2_invisible_man_jab"]
+[ext_resource type="Resource" path="res://data/techniques/cross.tres" id="3_invisible_man_cross"]
+[ext_resource type="Resource" path="res://data/techniques/counter.tres" id="4_invisible_man_counter"]
+
+[resource]
+script = ExtResource("1_invisible_man")
+id = "invisible_man"
+display_name = "The Invisible Man"
+tier = "miniboss"
+base_stats = {
+"power": 5,
+"speed": 9,
+"vitality": 6
+}
+traits = PackedStringArray("off_the_radar", "sucker_punch")
+technique_pool = [ExtResource("2_invisible_man_jab"), ExtResource("3_invisible_man_cross"), ExtResource("4_invisible_man_counter")]

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/perk_resource.gd" id="1_unfinished_business"]
+
+[resource]
+script = ExtResource("1_unfinished_business")
+id = "unfinished_business"
+display_name = "Unfinished Business"
+description = "A spirit doesn't leave until it gets what it came for. Counter triggers more often after a successful dodge/block."
+style_tag = "ghost"
+effect_type = 2
+effect_value = 0.15
+affects_tag = ""

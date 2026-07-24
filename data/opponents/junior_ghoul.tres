@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Opponent" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://resources/opponent_resource.gd" id="1_junior_ghoul"]
+[ext_resource type="Resource" path="res://data/techniques/jab.tres" id="2_junior_ghoul_jab"]
+[ext_resource type="Resource" path="res://data/techniques/cross.tres" id="3_junior_ghoul_cross"]
+
+[resource]
+script = ExtResource("1_junior_ghoul")
+id = "junior_ghoul"
+display_name = "Junior Ghoul"
+tier = "mob"
+total_stat_points = 4
+traits = PackedStringArray()
+technique_pool = [ExtResource("2_junior_ghoul_jab"), ExtResource("3_junior_ghoul_cross")]

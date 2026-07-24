@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Technique" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://resources/technique_resource.gd" id="1_counter"]
+[ext_resource type="Resource" path="res://data/styles/ghost.tres" id="2_counter_style"]
+
+[resource]
+script = ExtResource("1_counter")
+id = "counter"
+display_name = "Counter"
+stat_type = 2
+required_style = ExtResource("2_counter_style")
+base_damage = 12.0
+stamina_cost = 5.0
+unlock_cost = 25
+tags = PackedStringArray("reactive", "counter")

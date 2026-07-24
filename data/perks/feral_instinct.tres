@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/perk_resource.gd" id="1_feral_instinct"]
+
+[resource]
+script = ExtResource("1_feral_instinct")
+id = "feral_instinct"
+display_name = "Feral Instinct"
+description = "The longer the fight drags on, the more the wolf comes out. Dodge chance increases each round the fight continues."
+style_tag = "werewolf"
+effect_type = 1
+effect_value = 0.05
+affects_tag = ""

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Technique" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://resources/technique_resource.gd" id="1_uppercut"]
+[ext_resource type="Resource" path="res://data/styles/franken.tres" id="2_uppercut_style"]
+
+[resource]
+script = ExtResource("1_uppercut")
+id = "uppercut"
+display_name = "Uppercut"
+stat_type = 0
+required_style = ExtResource("2_uppercut_style")
+base_damage = 18.0
+stamina_cost = 10.0
+unlock_cost = 35
+tags = PackedStringArray("power_based", "finisher")
