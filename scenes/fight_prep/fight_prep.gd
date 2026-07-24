@@ -6,17 +6,24 @@ extends Control
 
 const LADDER_ORDER := ["mummy", "invisible_man", "dracula"]
 
-@onready var ladder_button: Button = $Margin/VBox/LadderButton
-@onready var duel_button: Button = $Margin/VBox/DuelButton
+@onready var gold_label: Label = $GoldLabel
+@onready var ladder_button: Button = $ActionsBox/LadderButton
+@onready var duel_button: Button = $ActionsBox/DuelButton
 
 
 func _ready() -> void:
 	ladder_button.pressed.connect(_on_ladder_button_pressed)
 	duel_button.pressed.connect(_on_duel_button_pressed)
+	GameState.currency_changed.connect(_on_currency_changed)
+	_refresh()
+
+
+func _on_currency_changed(_new_amount: int) -> void:
 	_refresh()
 
 
 func _refresh() -> void:
+	gold_label.text = "Gold: %d" % GameState.currency
 	var next_id: String = _next_ladder_opponent_id()
 	var opponent: Opponent = ContentDB.opponents.get(next_id)
 	ladder_button.text = "Fight %s" % (opponent.display_name if opponent != null else next_id)

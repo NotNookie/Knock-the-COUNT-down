@@ -1,15 +1,80 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://ngsm8eup6v00"]
 
-[ext_resource type="Script" path="res://scenes/fight/fight_screen.gd" id="1_fight_screen"]
-[ext_resource type="Texture2D" path="res://assets/sprites/main_rat-removebg-preview.png" id="2_player_sprite"]
-[ext_resource type="Texture2D" path="res://assets/sprites/enemy_rat2-removebg-preview.png" id="3_opponent_sprite"]
+[ext_resource type="Script" uid="uid://b35yvj3ctrldc" path="res://scenes/fight/fight_screen.gd" id="1_fight_screen"]
+[ext_resource type="Texture2D" uid="uid://dblbiigydq0rq" path="res://assets/sprites/main_rat-removebg-preview.png" id="2_player_sprite"]
+[ext_resource type="Texture2D" uid="uid://dfmpgt6daleh5" path="res://assets/sprites/enemy_rat2-removebg-preview.png" id="3_opponent_sprite"]
+[ext_resource type="Texture2D" uid="uid://bvwfjcdh4qmu1" path="res://assets/fight_bg.png" id="4_fight_bg"]
 
 [node name="FightScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_fight_screen")
 
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_fight_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MenuBacking" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="Arena" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerSprite" type="TextureRect" parent="Arena"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 1.0
+anchor_right = 0.15
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -64.0
+offset_right = 128.0
+texture = ExtResource("2_player_sprite")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="OpponentSprite" type="TextureRect" parent="Arena"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.85
+anchor_top = 1.0
+anchor_right = 0.85
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -64.0
+offset_right = -60.0
+texture = ExtResource("3_opponent_sprite")
+expand_mode = 5
+stretch_mode = 5
+flip_h = true
+
 [node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/margin_left = 16
@@ -20,31 +85,6 @@ theme_override_constants/margin_bottom = 16
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 theme_override_constants/separation = 8
-
-[node name="TitleLabel" type="Label" parent="Margin/VBox"]
-layout_mode = 2
-text = "FIGHT!"
-horizontal_alignment = 1
-
-[node name="Arena" type="HBoxContainer" parent="Margin/VBox"]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="PlayerSprite" type="TextureRect" parent="Margin/VBox/Arena"]
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 2
-texture = ExtResource("2_player_sprite")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="OpponentSprite" type="TextureRect" parent="Margin/VBox/Arena"]
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 2
-texture = ExtResource("3_opponent_sprite")
-flip_h = true
-expand_mode = 5
-stretch_mode = 5
 
 [node name="HpRow" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
@@ -72,15 +112,18 @@ text = "Opponent: 0/0"
 [node name="OpponentHpBar" type="ProgressBar" parent="Margin/VBox/HpRow/OpponentHpBox"]
 layout_mode = 2
 
+[node name="TitleLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "FIGHT!"
+horizontal_alignment = 1
+
 [node name="LogLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
 autowrap_mode = 2
-text = ""
 
 [node name="OutcomeLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
 horizontal_alignment = 1
-text = ""
 
 [node name="ContinueButton" type="Button" parent="Margin/VBox"]
 layout_mode = 2

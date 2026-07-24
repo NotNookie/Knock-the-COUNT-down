@@ -44,10 +44,10 @@ text = "Enter the Arena"
 
 [node name="TrainerButton" type="Button" parent="."]
 layout_mode = 1
-offset_left = 468.0
-offset_top = 16.0
-offset_right = 624.0
-offset_bottom = 44.0
+offset_left = 469.0
+offset_top = 297.0
+offset_right = 625.0
+offset_bottom = 328.0
 text = "Trainer"
 
 [node name="GoldLabel" type="Label" parent="."]
@@ -89,6 +89,8 @@ offset_left = -220.0
 offset_top = -140.0
 offset_right = 220.0
 offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="StatsPopup/Panel"]
 layout_mode = 2
@@ -186,6 +188,8 @@ offset_left = -260.0
 offset_top = -150.0
 offset_right = 260.0
 offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="TrainerPopup/Panel"]
 layout_mode = 2
@@ -282,6 +286,8 @@ offset_left = -220.0
 offset_top = -150.0
 offset_right = 220.0
 offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="PerksPopup/Panel"]
 layout_mode = 2

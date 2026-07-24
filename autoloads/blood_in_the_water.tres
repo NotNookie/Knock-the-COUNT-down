@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="Perk" load_steps=2 format=3 uid="uid://cs6shm1i3kyfv"]
 
-[ext_resource type="Script" path="res://resources/perk_resource.gd" id="1_blood_in_the_water"]
+[ext_resource type="Script" uid="uid://dgc8c66xqtmdc" path="res://resources/perk_resource.gd" id="1_pxbpt"]
 
 [resource]
-script = ExtResource("1_blood_in_the_water")
+script = ExtResource("1_pxbpt")
 id = "blood_in_the_water"
 display_name = "Blood in the Water"
 description = "Predators -- vampires, sharks, your boxer -- smell weakness the same way. Bonus damage vs. a staggered/low-health opponent."

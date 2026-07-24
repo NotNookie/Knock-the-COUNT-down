@@ -35,7 +35,7 @@ const MAX_EQUIPPED_PERKS := 2
 var level: int = 1
 ## XP accumulated toward the next level; resets (carrying overflow) on level-up.
 var xp: int = 0
-var currency: int = 0
+var currency: int = 150
 
 ## Keys: "power", "speed", "vitality". Everyone starts at 1.
 var stat_levels: Dictionary = {"power": 1, "speed": 1, "vitality": 1}
