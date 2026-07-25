@@ -20,20 +20,17 @@ func _ready() -> void:
 	_load_all(OPPONENTS_DIR, opponents)
 
 
+## Uses ResourceLoader.list_directory() rather than DirAccess -- DirAccess's
+## directory listing is filesystem-oriented and unreliably returns nothing
+## for resources packed into an exported .pck (seen on HTML5 exports
+## specifically), even though it works fine running from the editor.
+## ResourceLoader's version is the export-safe way to enumerate res:// content.
 func _load_all(dir_path: String, into: Dictionary) -> void:
-	var dir := DirAccess.open(dir_path)
-	if dir == null:
-		push_error("ContentDB: could not open %s" % dir_path)
-		return
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
+	for file_name: String in ResourceLoader.list_directory(dir_path):
+		if file_name.ends_with(".tres"):
 			var resource: Resource = load(dir_path + file_name)
 			if resource != null and "id" in resource:
 				into[resource.id] = resource
-		file_name = dir.get_next()
-	dir.list_dir_end()
 
 
 ## Techniques usable by a given style: its own unlocks plus all universal ones.

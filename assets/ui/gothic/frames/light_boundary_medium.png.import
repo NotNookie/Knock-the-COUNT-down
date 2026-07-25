@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvwfjcdh4qmu1"
-path="res://.godot/imported/fight_bg.png-d17611e1cfdbbf5e25ce8301a1be0de1.ctex"
+uid="uid://b2y1inin5sd85"
+path="res://.godot/imported/light_boundary_medium.png-930ca31a5b2c8ea2919161c0722bb59b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fight_bg.png"
-dest_files=["res://.godot/imported/fight_bg.png-d17611e1cfdbbf5e25ce8301a1be0de1.ctex"]
+source_file="res://assets/ui/gothic/frames/light_boundary_medium.png"
+dest_files=["res://.godot/imported/light_boundary_medium.png-930ca31a5b2c8ea2919161c0722bb59b.ctex"]
 
 [params]
 

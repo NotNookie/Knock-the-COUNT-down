@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3yuaxdtoiivd"
-path="res://.godot/imported/fight_building_bg.png-fcde4468ded64f28b8e0959ffe6febf6.ctex"
+uid="uid://beyohe37dv1p5"
+path="res://.godot/imported/volume.png-23340fefb8f858d02e72aedaf5f10f7d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fight_building_bg.png"
-dest_files=["res://.godot/imported/fight_building_bg.png-fcde4468ded64f28b8e0959ffe6febf6.ctex"]
+source_file="res://assets/ui/icons/volume.png"
+dest_files=["res://.godot/imported/volume.png-23340fefb8f858d02e72aedaf5f10f7d.ctex"]
 
 [params]
 

@@ -10,5 +10,5 @@ id = "big_rat"
 display_name = "Big Rat"
 tier = "mob"
 total_stat_points = 4
-traits = PackedStringArray()
+traits = PackedStringArray("sucker_punch")
 technique_pool = [ExtResource("2_big_rat_jab"), ExtResource("3_big_rat_cross")]

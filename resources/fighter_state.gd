@@ -41,14 +41,23 @@ func is_alive() -> bool:
 	return current_hp > 0.0
 
 
+## Mob-tier opponents gain this many extra stat points per player level above 1,
+## on top of their base total_stat_points -- keeps filler fights from staying
+## trivial (or their gold/XP payout from staying worthless) as the player grows.
+const MOB_STAT_POINTS_PER_LEVEL := 4
+
+
 ## Builds a live FighterState for an Opponent resource -- the boss/filler-fight
 ## equivalent of GameState.build_player_fighter_state(). Mob-tier opponents get
 ## their total_stat_points randomly redistributed each fight instead of using
 ## a fixed base_stats spread, so the same mob plays a little differently each duel.
-static func from_opponent(opponent: Opponent) -> FighterState:
+## player_level scales mob difficulty to match; ignored for miniboss/boss (those
+## are hand-tuned ladder encounters, not filler).
+static func from_opponent(opponent: Opponent, player_level: int = 1) -> FighterState:
 	var state := FighterState.new(opponent.display_name, null)
 	if opponent.tier == "mob" and opponent.total_stat_points > 0:
-		state.stat_levels = _random_stat_split(opponent.total_stat_points)
+		var scaled_points: int = opponent.total_stat_points + (player_level - 1) * MOB_STAT_POINTS_PER_LEVEL
+		state.stat_levels = _random_stat_split(scaled_points)
 	else:
 		state.stat_levels = {
 			"power": opponent.base_stats.get("power", 1),

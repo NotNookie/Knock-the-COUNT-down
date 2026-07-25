@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8r1s8c1i63n3"
-path="res://.godot/imported/fight_building_host.png-e75ecb22fd7e22453f2c1e9ec37e32e3.ctex"
+path="res://.godot/imported/fight_building_host.png-61037becd2a64137871a6b5e6287cb18.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fight_building_host.png"
-dest_files=["res://.godot/imported/fight_building_host.png-e75ecb22fd7e22453f2c1e9ec37e32e3.ctex"]
+source_file="res://assets/portraits/fight_building_host.png"
+dest_files=["res://.godot/imported/fight_building_host.png-61037becd2a64137871a6b5e6287cb18.ctex"]
 
 [params]
 

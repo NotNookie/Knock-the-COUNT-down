@@ -8,8 +8,9 @@
 [resource]
 script = ExtResource("1_invisible_man")
 id = "invisible_man"
-display_name = "The Invisible Man"
+display_name = "Nightstalker"
 tier = "miniboss"
+level = 6
 base_stats = {
 "power": 5,
 "speed": 9,

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Knock the COUNT down"
-run/main_scene="res://scenes/hub/hub.tscn"
+run/main_scene="res://scenes/start_menu/start_menu.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,9 @@ config/icon="res://icon.svg"
 ContentDB="*res://autoloads/content_db.gd"
 GameState="*res://autoloads/game_state.gd"
 FightSession="*res://autoloads/fight_session.gd"
+SceneTransition="*res://autoloads/scene_transition.tscn"
+UiSfx="*res://autoloads/ui_sfx.gd"
+SettingsOverlay="*res://autoloads/settings_overlay.tscn"
 
 [display]
 
@@ -28,6 +31,11 @@ window/size/viewport_height=360
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="viewport"
+
+[gui]
+
+theme/custom="res://assets/ui/game_theme.tres"
+timers/tooltip_delay_sec=0.0
 
 [rendering]
 

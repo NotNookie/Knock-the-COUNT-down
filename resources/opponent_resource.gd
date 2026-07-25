@@ -7,6 +7,10 @@ extends Resource
 ## "mob" (weak, trait-free filler), "miniboss" (ladder fight with unique traits),
 ## or "boss" (Dracula -- the one and only final boss).
 @export var tier: String = "mob"
+## Miniboss/boss only: their fixed narrative difficulty level, just for
+## display in the fight screen. Mobs display the player's current level
+## instead, since FighterState.from_opponent scales them to match it.
+@export var level: int = 1
 ## Keys: "power", "speed", "vitality". Used as-is for miniboss/boss (hand-tuned
 ## encounters). Ignored for "mob" tier -- see total_stat_points instead.
 @export var base_stats: Dictionary = {}

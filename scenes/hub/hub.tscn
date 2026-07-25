@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://u1w2it5lpq54"]
+[gd_scene load_steps=9 format=3 uid="uid://u1w2it5lpq54"]
 
 [ext_resource type="Script" uid="uid://cnk0vqmc7ck07" path="res://scenes/hub/hub.gd" id="1_hub"]
-[ext_resource type="Texture2D" uid="uid://d20544cf0ybac" path="res://assets/background.png" id="2_background"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/background.png" id="2_background"]
 [ext_resource type="Texture2D" uid="uid://dblbiigydq0rq" path="res://assets/sprites/main_rat-removebg-preview.png" id="3_character"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/icons/16px/16px_satchel.png" id="4_gold_icon"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/frames/light_boundary_medium.png" id="5_divider"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/icons/16px/16px_hat.png" id="6_trainer_icon"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/icons/16px/16px_pocketwatch.png" id="7_stats_icon"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/icons/16px/16px_inkwell_and_quill.png" id="8_perks_icon"]
 
 [node name="Hub" type="Control"]
 layout_mode = 3
@@ -35,6 +40,7 @@ expand_mode = 5
 stretch_mode = 5
 
 [node name="ArenaButton" type="Button" parent="."]
+theme_type_variation = &"AccentButton"
 layout_mode = 1
 offset_left = 16.0
 offset_top = 16.0
@@ -48,16 +54,52 @@ offset_left = 469.0
 offset_top = 297.0
 offset_right = 625.0
 offset_bottom = 328.0
+icon = ExtResource("6_trainer_icon")
 text = "Trainer"
 
-[node name="GoldLabel" type="Label" parent="."]
+[node name="StatsButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 440.0
+offset_top = 16.0
+offset_right = 520.0
+offset_bottom = 40.0
+icon = ExtResource("7_stats_icon")
+text = "Stats"
+
+[node name="PerksButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 528.0
+offset_top = 16.0
+offset_right = 608.0
+offset_bottom = 40.0
+icon = ExtResource("8_perks_icon")
+text = "Perks"
+
+[node name="GoldBadge" type="PanelContainer" parent="."]
+theme_type_variation = &"GoldBadge"
 layout_mode = 1
 offset_left = 268.0
 offset_top = 16.0
 offset_right = 372.0
 offset_bottom = 40.0
+
+[node name="HBox" type="HBoxContainer" parent="GoldBadge"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="GoldBadge/HBox"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("4_gold_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="GoldBadge/HBox"]
+theme_type_variation = &"GoldLabel"
+layout_mode = 2
 text = "Gold: 0"
-horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StatsPopup" type="Control" parent="."]
 visible = false
@@ -98,8 +140,16 @@ theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="StatsPopup/Panel/VBox"]
 layout_mode = 2
-text = "Trainer"
+text = "Stats"
 horizontal_alignment = 1
+
+[node name="Divider" type="TextureRect" parent="StatsPopup/Panel/VBox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("5_divider")
+expand_mode = 3
+stretch_mode = 1
 
 [node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox"]
 layout_mode = 2
@@ -115,6 +165,7 @@ layout_mode = 2
 [node name="PowerRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
+tooltip_text = "+8% technique damage per point."
 
 [node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/PowerRow"]
 custom_minimum_size = Vector2(160, 0)
@@ -129,6 +180,7 @@ text = "+1"
 [node name="SpeedRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
+tooltip_text = "Higher Speed acts first each exchange and adds dodge chance against slower opponents."
 
 [node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/SpeedRow"]
 custom_minimum_size = Vector2(160, 0)
@@ -143,6 +195,7 @@ text = "+1"
 [node name="VitalityRow" type="HBoxContainer" parent="StatsPopup/Panel/VBox/StatsBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
+tooltip_text = "+10 max HP, +5 max Stamina, and -2% incoming damage per point (capped at 60%)."
 
 [node name="LevelLabel" type="Label" parent="StatsPopup/Panel/VBox/StatsBox/VitalityRow"]
 custom_minimum_size = Vector2(160, 0)
@@ -199,6 +252,14 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Trainer"
 horizontal_alignment = 1
+
+[node name="Divider" type="TextureRect" parent="TrainerPopup/Panel/VBox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("5_divider")
+expand_mode = 3
+stretch_mode = 1
 
 [node name="CurrencyLabel" type="Label" parent="TrainerPopup/Panel/VBox"]
 layout_mode = 2
@@ -298,6 +359,19 @@ layout_mode = 2
 text = "Perk Den"
 horizontal_alignment = 1
 
+[node name="EquippedLabel" type="Label" parent="PerksPopup/Panel/VBox"]
+layout_mode = 2
+text = "Equip up to 2 perks"
+horizontal_alignment = 1
+
+[node name="Divider" type="TextureRect" parent="PerksPopup/Panel/VBox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("5_divider")
+expand_mode = 3
+stretch_mode = 1
+
 [node name="PerksBox" type="VBoxContainer" parent="PerksPopup/Panel/VBox"]
 layout_mode = 2
 
@@ -346,3 +420,5 @@ text = "Close"
 
 [connection signal="pressed" from="ArenaButton" to="." method="_on_arena_button_pressed"]
 [connection signal="pressed" from="TrainerButton" to="." method="_on_trainer_button_pressed"]
+[connection signal="pressed" from="StatsButton" to="." method="_on_stats_button_pressed"]
+[connection signal="pressed" from="PerksButton" to="." method="_on_perks_button_pressed"]

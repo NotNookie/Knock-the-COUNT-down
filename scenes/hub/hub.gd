@@ -1,8 +1,9 @@
 extends Control
 ## Town view: background + character in the middle + interactable building
-## hotspots. Arena launches a fight. Trainer spends gold on styles and the
-## skill tree of techniques inside them. Stats/Perks popups still exist
-## (unreachable for now -- no hotspot wired to them) but aren't deleted.
+## hotspots (Arena, Trainer) plus a small S&S2-style tab bar (Stats, Perks)
+## for menus that aren't tied to a physical building. Arena launches a
+## fight. Trainer spends gold on styles and the skill tree of techniques
+## inside them. Stats spends stat points; Perks equips unlocked perks.
 
 const STAT_IDS := ["power", "speed", "vitality"]
 const STAT_DISPLAY_NAMES := {"power": "Power", "speed": "Speed", "vitality": "Vitality"}
@@ -10,7 +11,8 @@ const STYLE_IDS := ["franken", "werewolf", "ghost", "hunter"]
 const PERK_IDS := ["galvanized", "feral_instinct", "unfinished_business", "silver_reserves", "blood_in_the_water"]
 
 @onready var character_sprite: TextureRect = $CharacterSprite
-@onready var gold_label: Label = $GoldLabel
+@onready var gold_label: Label = $GoldBadge/HBox/GoldLabel
+@onready var stats_button: Button = $StatsButton
 
 @onready var stats_popup: Control = $StatsPopup
 @onready var trainer_popup: Control = $TrainerPopup
@@ -25,6 +27,7 @@ const PERK_IDS := ["galvanized", "feral_instinct", "unfinished_business", "silve
 	"vitality": $StatsPopup/Panel/VBox/StatsBox/VitalityRow,
 }
 
+@onready var perks_equipped_label: Label = $PerksPopup/Panel/VBox/EquippedLabel
 @onready var trainer_currency_label: Label = $TrainerPopup/Panel/VBox/CurrencyLabel
 @onready var style_rows: Dictionary = {
 	"franken": $TrainerPopup/Panel/VBox/StylesBox/FrankenRow,
@@ -52,6 +55,7 @@ func _ready() -> void:
 	GameState.style_unlocked.connect(_on_state_changed)
 	GameState.active_style_changed.connect(_on_state_changed)
 	GameState.technique_unlocked.connect(_on_state_changed)
+	GameState.technique_equip_changed.connect(_on_state_changed)
 	GameState.perk_unlocked.connect(_on_state_changed)
 	GameState.perk_equip_changed.connect(_on_state_changed)
 
@@ -93,11 +97,19 @@ func _start_breathing_animation() -> void:
 
 
 func _on_arena_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/fight_prep/fight_prep.tscn")
+	SceneTransition.change_scene("res://scenes/fight_prep/fight_prep.tscn")
 
 
 func _on_trainer_button_pressed() -> void:
 	_open_popup(trainer_popup)
+
+
+func _on_stats_button_pressed() -> void:
+	_open_popup(stats_popup)
+
+
+func _on_perks_button_pressed() -> void:
+	_open_popup(perks_popup)
 
 
 func _open_popup(popup: Control) -> void:
@@ -146,6 +158,7 @@ func _on_state_changed(_a = null, _b = null) -> void:
 
 func _refresh() -> void:
 	gold_label.text = "Gold: %d" % GameState.currency
+	stats_button.text = "Stats (!)" if GameState.available_stat_points > 0 else "Stats"
 
 	level_label.text = "Level %d  (XP: %d/%d)" % [
 		GameState.level, GameState.xp, GameState.xp_required_for_next_level()
@@ -177,9 +190,11 @@ func _refresh() -> void:
 		else:
 			button.text = "Buy %s (%d gold)" % [style.display_name, GameState.STYLE_COST]
 			button.disabled = not GameState.can_afford(GameState.STYLE_COST)
+		button.tooltip_text = "%s\nWhile active: %s" % [style.monster_flavor, _style_bonus_text(style)]
 	_refresh_technique_tree()
 
 	var perk_slots_full: bool = GameState.equipped_perk_ids.size() >= GameState.MAX_EQUIPPED_PERKS
+	perks_equipped_label.text = "Equipped: %d / %d" % [GameState.equipped_perk_ids.size(), GameState.MAX_EQUIPPED_PERKS]
 	for perk_id: String in PERK_IDS:
 		var row: HBoxContainer = perk_rows[perk_id]
 		var button: Button = row.get_node("PerkButton")
@@ -197,6 +212,7 @@ func _refresh() -> void:
 		else:
 			button.text = "Equip %s" % perk.display_name
 			button.disabled = perk_slots_full
+		button.tooltip_text = perk.description
 
 
 ## Rebuilds the horizontally-scrollable skill tree for whichever style is
@@ -226,5 +242,30 @@ func _refresh_technique_tree() -> void:
 		else:
 			button.text = "Unlock %s\n(%d gold)" % [technique.display_name, technique.unlock_cost]
 			button.disabled = not GameState.can_afford(technique.unlock_cost)
+		button.tooltip_text = _technique_tooltip(technique)
 		button.pressed.connect(_on_technique_button_pressed.bind(technique.id))
 		tree_row.add_child(button)
+
+
+func _technique_tooltip(technique: Technique) -> String:
+	var lines: PackedStringArray = [
+		"Damage: %d" % int(technique.base_damage),
+		"Stamina Cost: %d" % int(technique.stamina_cost),
+	]
+	if not technique.tags.is_empty():
+		lines.append("Tags: %s" % ", ".join(technique.tags))
+	return "\n".join(lines)
+
+
+func _style_bonus_text(style: FighterStyle) -> String:
+	var bonus: int = GameState.ACTIVE_STYLE_STAT_BONUS
+	match style.primary_stat:
+		Technique.StatType.POWER:
+			return "+%d Power" % bonus
+		Technique.StatType.SPEED:
+			return "+%d Speed" % bonus
+		Technique.StatType.VITALITY:
+			return "+%d Vitality" % bonus
+		_:
+			var split: int = int(bonus / 3.0)
+			return "+%d Power, +%d Speed, +%d Vitality" % [split, split, split]

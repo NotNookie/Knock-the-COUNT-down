@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://c8ecgeynputjx"]
 
-[ext_resource type="Script" path="res://scenes/fight_prep/fight_prep.gd" id="1_fight_prep"]
-[ext_resource type="Texture2D" path="res://assets/fight_building_bg.png" id="2_bg"]
-[ext_resource type="Texture2D" path="res://assets/fight_building_host.png" id="3_host"]
+[ext_resource type="Script" uid="uid://drys8pmsfwl10" path="res://scenes/fight_prep/fight_prep.gd" id="1_fight_prep"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/fight_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/portraits/fight_building_host.png" id="3_host"]
+[ext_resource type="Texture2D" path="res://assets/ui/gothic/icons/16px/16px_satchel.png" id="4_gold_icon"]
+[ext_resource type="Texture2D" path="res://assets/ui/dialog/speech_tail.png" id="5_speech_tail"]
 
 [node name="FightPrep" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_fight_prep")
@@ -14,16 +18,18 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="HostPortrait" type="TextureRect" parent="."]
 layout_mode = 1
-offset_left = 16.0
-offset_top = 180.0
-offset_right = 144.0
-offset_bottom = 308.0
+offset_left = 94.0
+offset_top = 92.0
+offset_right = 345.0
+offset_bottom = 372.0
 texture = ExtResource("3_host")
 expand_mode = 5
 stretch_mode = 5
@@ -38,16 +44,44 @@ offset_bottom = 116.0
 [node name="HostLine" type="Label" parent="SpeechBubble"]
 layout_mode = 2
 text = "I am the Arena's Promoter. What sort of fight are you after?"
-autowrap_mode = 2
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="GoldLabel" type="Label" parent="."]
+[node name="Tail" type="TextureRect" parent="."]
+layout_mode = 1
+offset_left = 138.0
+offset_top = 113.0
+offset_right = 166.0
+offset_bottom = 131.0
+texture = ExtResource("5_speech_tail")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldBadge" type="PanelContainer" parent="."]
+theme_type_variation = &"GoldBadge"
 layout_mode = 1
 offset_left = 16.0
 offset_top = 320.0
 offset_right = 160.0
 offset_bottom = 344.0
+
+[node name="HBox" type="HBoxContainer" parent="GoldBadge"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="GoldBadge/HBox"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("4_gold_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="GoldBadge/HBox"]
+theme_type_variation = &"GoldLabel"
+layout_mode = 2
 text = "Gold: 0"
+vertical_alignment = 1
 
 [node name="ActionsBox" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -58,10 +92,12 @@ offset_bottom = 220.0
 theme_override_constants/separation = 16
 
 [node name="LadderButton" type="Button" parent="ActionsBox"]
+theme_type_variation = &"AccentButton"
 layout_mode = 2
-text = "Fight The Mummy"
+text = "Fight The Blood Knight"
 
 [node name="DuelButton" type="Button" parent="ActionsBox"]
+theme_type_variation = &"AccentButton"
 layout_mode = 2
 text = "Duel"
 

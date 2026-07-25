@@ -10,5 +10,5 @@ id = "junior_ghoul"
 display_name = "Junior Ghoul"
 tier = "mob"
 total_stat_points = 4
-traits = PackedStringArray()
+traits = PackedStringArray("curse_of_decay")
 technique_pool = [ExtResource("2_junior_ghoul_jab"), ExtResource("3_junior_ghoul_cross")]

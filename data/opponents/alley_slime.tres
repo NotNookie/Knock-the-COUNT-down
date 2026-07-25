@@ -10,5 +10,5 @@ id = "alley_slime"
 display_name = "Alley Slime"
 tier = "mob"
 total_stat_points = 4
-traits = PackedStringArray()
+traits = PackedStringArray("ancient_resilience")
 technique_pool = [ExtResource("2_alley_slime_jab"), ExtResource("3_alley_slime_cross")]

@@ -8,8 +8,9 @@
 [resource]
 script = ExtResource("1_mummy")
 id = "mummy"
-display_name = "The Mummy"
+display_name = "Blood Knight"
 tier = "miniboss"
+level = 3
 base_stats = {
 "power": 8,
 "speed": 3,

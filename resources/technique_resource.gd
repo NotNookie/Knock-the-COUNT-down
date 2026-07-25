@@ -14,5 +14,5 @@ enum StatType { POWER, SPEED, VITALITY, UNIVERSAL }
 ## starters (Jab/Cross) are 0 -- everyone has them from the start for free.
 @export var unlock_cost: int = 0
 ## Free-form tags consumed by fight_simulator.gd and opponent traits,
-## e.g. "power_based" is checked by the Mummy's Ancient Resilience trait.
+## e.g. "power_based" is checked by the Blood Knight's Ancient Resilience trait.
 @export var tags: PackedStringArray = []

@@ -22,7 +22,7 @@ const SUCKER_PUNCH_CHANCE := 0.15
 const SUCKER_PUNCH_DAMAGE := 10.0
 
 
-static func simulate(player: FighterState, opponent: FighterState, strategy: Dictionary = {}) -> FightLog:
+static func simulate(player: FighterState, opponent: FighterState) -> FightLog:
 	var log := FightLog.new()
 	var flags := {
 		"player": _fresh_flags(),
@@ -40,7 +40,7 @@ static func simulate(player: FighterState, opponent: FighterState, strategy: Dic
 				var target_id: String = "opponent" if actor_id == "player" else "player"
 				if not actor.is_alive() or not target.is_alive():
 					break
-				_take_turn(actor, target, actor_id, target_id, flags, round_num, strategy, log)
+				_take_turn(actor, target, actor_id, target_id, flags, round_num, log)
 				if not target.is_alive():
 					break
 			if not player.is_alive() or not opponent.is_alive():
@@ -90,18 +90,22 @@ static func _turn_order(player: FighterState, opponent: FighterState) -> Array[S
 	return ["opponent", "player"]
 
 
-static func _take_turn(actor: FighterState, target: FighterState, actor_id: String, target_id: String, flags: Dictionary, round_num: int, strategy: Dictionary, log: FightLog) -> void:
-	var technique: Technique = _choose_technique(actor, target, actor_id, flags, strategy)
+static func _take_turn(actor: FighterState, target: FighterState, actor_id: String, target_id: String, flags: Dictionary, round_num: int, log: FightLog) -> void:
+	var technique: Technique = _choose_technique(actor, target, actor_id, flags)
 	if technique == null:
 		return
 	actor.current_stamina = maxf(0.0, actor.current_stamina - technique.stamina_cost)
 
 	var actor_flags: Dictionary = flags[actor_id]
 	var target_flags: Dictionary = flags[target_id]
+	# This turn (whatever it does) consumes the "just dodged" counter window --
+	# it only stays open for the actor's very next action.
+	actor_flags["just_dodged"] = false
 
 	# Mist Form: automatically avoids the first power-tagged hit each round.
 	if target.has_trait("mist_form") and not target_flags.get("mist_form_used", false) and technique.tags.has("power_based"):
 		target_flags["mist_form_used"] = true
+		target_flags["just_dodged"] = true
 		log.add(_make_event(round_num, actor_id, technique.id, "avoided_mist", 0.0, actor, target, "Mist Form lets them slip through the hit entirely."))
 		return
 
@@ -111,12 +115,13 @@ static func _take_turn(actor: FighterState, target: FighterState, actor_id: Stri
 	hit_chance = clampf(hit_chance, 0.1, 0.98)
 
 	if randf() > hit_chance:
+		target_flags["just_dodged"] = true
 		log.add(_make_event(round_num, actor_id, technique.id, "miss", 0.0, actor, target, ""))
 		return
 
 	var damage: float
 	var bypass_reduction := false
-	# Sucker Punch: Invisible Man periodically bypasses defense entirely.
+	# Sucker Punch: the Nightstalker periodically bypasses defense entirely.
 	if actor.has_trait("sucker_punch") and randf() < SUCKER_PUNCH_CHANCE:
 		damage = SUCKER_PUNCH_DAMAGE
 		bypass_reduction = true
@@ -145,21 +150,35 @@ static func _take_turn(actor: FighterState, target: FighterState, actor_id: Stri
 	log.add(_make_event(round_num, actor_id, technique.id, "hit", damage, actor, target, ""))
 
 
-static func _choose_technique(actor: FighterState, target: FighterState, actor_id: String, flags: Dictionary, strategy: Dictionary) -> Technique:
+static func _choose_technique(actor: FighterState, target: FighterState, actor_id: String, flags: Dictionary) -> Technique:
 	var pool: Array[Technique] = actor.equipped_techniques
 	if pool.is_empty():
 		return null
 
-	var usable: Array = pool.filter(func(t: Technique) -> bool: return actor.current_stamina >= t.stamina_cost)
+	# "counter"-tagged techniques (e.g. Counter) are only usable the turn right
+	# after this fighter successfully dodged -- see "just_dodged" in _take_turn.
+	var can_counter: bool = flags[actor_id].get("just_dodged", false)
+	var available: Array = pool.filter(func(t: Technique) -> bool: return can_counter or not t.tags.has("counter"))
+	if available.is_empty():
+		available = pool
+
+	var usable: Array = available.filter(func(t: Technique) -> bool: return actor.current_stamina >= t.stamina_cost)
 	if usable.is_empty():
-		var cheapest: Technique = pool[0]
-		for t: Technique in pool:
+		var cheapest: Technique = available[0]
+		for t: Technique in available:
 			if t.stamina_cost < cheapest.stamina_cost:
 				cheapest = t
 		usable = [cheapest]
 
+	# The dodge window is fleeting -- capitalize on it immediately rather than
+	# leaving Counter to compete with other techniques on damage/aggression.
+	if can_counter:
+		var counters: Array = usable.filter(func(t: Technique) -> bool: return t.tags.has("counter"))
+		if not counters.is_empty():
+			return counters[0]
+
 	var target_flags: Dictionary = flags["opponent"] if actor_id == "player" else flags["player"]
-	if target_flags.get("staggered", false) and strategy.get("finish_when_stunned", true):
+	if target_flags.get("staggered", false):
 		var finishers: Array = usable.filter(func(t: Technique) -> bool: return t.tags.has("finisher"))
 		if not finishers.is_empty():
 			return finishers[0]
@@ -204,6 +223,7 @@ static func _fresh_flags() -> Dictionary:
 		"mist_form_used": false,
 		"curse_stacks": 0,
 		"blood_frenzy": false,
+		"just_dodged": false,
 	}
 
 

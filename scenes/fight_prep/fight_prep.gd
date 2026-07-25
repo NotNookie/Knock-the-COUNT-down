@@ -1,14 +1,19 @@
 extends Control
 ## Arena entry: two paths. "Ladder" fights whichever ladder opponent you
-## haven't beaten yet (Mummy -> Invisible Man -> Dracula, label updates to
+## haven't beaten yet (Blood Knight -> Nightstalker -> Dracula, label updates to
 ## show who's next). "Duel" picks a random mob-tier opponent immediately --
 ## no selection list, since the whole point is a quick filler fight.
 
+## Internal opponent ids -- unchanged even though "mummy"/"invisible_man" now
+## display as "Blood Knight"/"Nightstalker" (vampire-themed reskin, see their
+## .tres files). Renaming the ids themselves would mean touching save-shaped
+## data like GameState.ladder_progress's keys, which isn't worth the risk.
 const LADDER_ORDER := ["mummy", "invisible_man", "dracula"]
 
-@onready var gold_label: Label = $GoldLabel
+@onready var gold_label: Label = $GoldBadge/HBox/GoldLabel
 @onready var ladder_button: Button = $ActionsBox/LadderButton
 @onready var duel_button: Button = $ActionsBox/DuelButton
+@onready var host_portrait: TextureRect = $HostPortrait
 
 
 func _ready() -> void:
@@ -16,6 +21,21 @@ func _ready() -> void:
 	duel_button.pressed.connect(_on_duel_button_pressed)
 	GameState.currency_changed.connect(_on_currency_changed)
 	_refresh()
+	_start_breathing_animation()
+
+
+## Same idle scale-pulse as the Hub's character sprite -- keeps the host from
+## sitting dead-still while the player reads the speech bubble.
+func _start_breathing_animation() -> void:
+	const SCALE_AMOUNT := 0.015
+	const BOB_DURATION := 1.4
+	host_portrait.pivot_offset = host_portrait.size / 2.0
+	var tween := create_tween()
+	tween.set_loops()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(host_portrait, "scale", Vector2.ONE * (1.0 + SCALE_AMOUNT), BOB_DURATION)
+	tween.tween_property(host_portrait, "scale", Vector2.ONE, BOB_DURATION)
 
 
 func _on_currency_changed(_new_amount: int) -> void:
@@ -59,8 +79,8 @@ func _on_duel_button_pressed() -> void:
 func _start_fight(opponent_id: String) -> void:
 	FightSession.start_fight(opponent_id)
 	FightSession.run_simulation()
-	get_tree().change_scene_to_file("res://scenes/fight/fight_screen.tscn")
+	SceneTransition.change_scene("res://scenes/fight/fight_screen.tscn")
 
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/hub/hub.tscn")
+	SceneTransition.change_scene("res://scenes/hub/hub.tscn")

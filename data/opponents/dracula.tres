@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Opponent" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="Opponent" load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://resources/opponent_resource.gd" id="1_dracula"]
 [ext_resource type="Resource" path="res://data/techniques/jab.tres" id="2_dracula_jab"]
@@ -7,12 +7,14 @@
 [ext_resource type="Resource" path="res://data/techniques/uppercut.tres" id="5_dracula_uppercut"]
 [ext_resource type="Resource" path="res://data/techniques/body_blow.tres" id="6_dracula_body_blow"]
 [ext_resource type="Resource" path="res://data/techniques/counter.tres" id="7_dracula_counter"]
+[ext_resource type="Texture2D" path="res://assets/sprites/dracula_sprite.png" id="8_dracula_portrait"]
 
 [resource]
 script = ExtResource("1_dracula")
 id = "dracula"
 display_name = "Count Dracula"
 tier = "boss"
+level = 10
 base_stats = {
 "power": 10,
 "speed": 8,
@@ -20,3 +22,4 @@ base_stats = {
 }
 traits = PackedStringArray("night_walker", "mist_form", "blood_frenzy")
 technique_pool = [ExtResource("2_dracula_jab"), ExtResource("3_dracula_cross"), ExtResource("4_dracula_hook"), ExtResource("5_dracula_uppercut"), ExtResource("6_dracula_body_blow"), ExtResource("7_dracula_counter")]
+portrait = ExtResource("8_dracula_portrait")

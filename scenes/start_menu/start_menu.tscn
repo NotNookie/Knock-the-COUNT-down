@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/start_menu/start_menu.gd" id="1_start_menu"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/fight_bg.png" id="2_bg"]
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_start_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 36.0
+offset_right = 620.0
+offset_bottom = 76.0
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.85, 0.22, 0.26, 1)
+text = "Knock the COUNT Down"
+horizontal_alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PromptLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+text = "What's your fighter's name?"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="Panel/VBox"]
+layout_mode = 2
+text = "Boxer"
+placeholder_text = "Enter your name"
+alignment = 1
+max_length = 16
+
+[node name="StartButton" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"AccentButton"
+text = "Enter the Arena"

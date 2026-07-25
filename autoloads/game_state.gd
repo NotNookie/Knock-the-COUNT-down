@@ -13,6 +13,7 @@ signal currency_changed(new_amount: int)
 signal style_unlocked(style: FighterStyle)
 signal active_style_changed(style: FighterStyle)
 signal technique_unlocked(technique_id: String)
+signal technique_equip_changed(technique_id: String, equipped: bool)
 signal perk_unlocked(perk_id: String)
 signal perk_equip_changed(perk_id: String, equipped: bool)
 signal opponent_defeated(opponent_id: String)
@@ -20,7 +21,12 @@ signal opponent_defeated(opponent_id: String)
 ## XP/gold awarded per victory, by opponent tier -- mobs give little (so
 ## grinding them alone isn't the efficient path), the boss gives a lot.
 const XP_PER_TIER := {"mob": 10, "miniboss": 25, "boss": 100}
-const GOLD_PER_TIER := {"mob": 5, "miniboss": 15, "boss": 50}
+const GOLD_PER_TIER := {"mob": 15, "miniboss": 15, "boss": 50}
+## Filler (mob-tier) fights scale up with the player's level -- both how
+## tough the mob rolls (see FighterState.from_opponent) and what it pays out,
+## so grinding early mobs doesn't stay trivial/worthless as the player grows.
+const MOB_XP_PER_LEVEL := 4
+const MOB_GOLD_PER_LEVEL := 5
 ## XP required to reach the next level scales with the level being entered
 ## (e.g. level 1->2 needs BASE*2), matching the old training-cost curve.
 const LEVEL_UP_BASE_XP := 20
@@ -35,11 +41,13 @@ const MAX_EQUIPPED_PERKS := 2
 var level: int = 1
 ## XP accumulated toward the next level; resets (carrying overflow) on level-up.
 var xp: int = 0
-var currency: int = 150
+var currency: int = 0
+## Set at the start menu; shown in fight commentary and HP labels.
+var player_name: String = "Boxer"
 
 ## Keys: "power", "speed", "vitality". Everyone starts at 1.
 var stat_levels: Dictionary = {"power": 1, "speed": 1, "vitality": 1}
-var available_stat_points: int = 0
+var available_stat_points: int = 4
 
 ## Styles purchased with gold -- more than one can be owned over a run.
 var unlocked_styles: Array[FighterStyle] = []
@@ -131,11 +139,14 @@ func equip_technique(technique_id: String) -> bool:
 	if equipped_technique_ids.size() >= MAX_EQUIPPED_TECHNIQUES:
 		return false
 	equipped_technique_ids.append(technique_id)
+	technique_equip_changed.emit(technique_id, true)
 	return true
 
 
 func unequip_technique(technique_id: String) -> void:
-	equipped_technique_ids.erase(technique_id)
+	if equipped_technique_ids.has(technique_id):
+		equipped_technique_ids.erase(technique_id)
+		technique_equip_changed.emit(technique_id, false)
 
 
 func unlock_perk(perk_id: String) -> void:
@@ -171,8 +182,12 @@ func xp_required_for_next_level() -> int:
 func award_victory(opponent_id: String) -> void:
 	var opponent: Opponent = ContentDB.opponents.get(opponent_id)
 	var tier: String = opponent.tier if opponent != null else "mob"
-	xp += XP_PER_TIER.get(tier, 10)
-	currency += GOLD_PER_TIER.get(tier, 5)
+	if tier == "mob":
+		xp += XP_PER_TIER.get(tier, 10) + (level - 1) * MOB_XP_PER_LEVEL
+		currency += GOLD_PER_TIER.get(tier, 15) + (level - 1) * MOB_GOLD_PER_LEVEL
+	else:
+		xp += XP_PER_TIER.get(tier, 10)
+		currency += GOLD_PER_TIER.get(tier, 15)
 	currency_changed.emit(currency)
 
 	var required: int = xp_required_for_next_level()
@@ -190,10 +205,19 @@ func award_victory(opponent_id: String) -> void:
 	opponent_defeated.emit(opponent_id)
 
 
+## Flat combat-only stat bonus from having a style active -- doesn't touch the
+## permanent stat_levels spent via spend_stat_point(), just the live FighterState
+## built for a fight. Single-stat styles (Franken/Werewolf/Ghost) put it all
+## into their primary_stat; Hunter's "balanced" (UNIVERSAL) style splits it
+## across all three instead so it isn't just strictly worse than the others.
+const ACTIVE_STYLE_STAT_BONUS := 3
+
+
 ## Builds a live FighterState for the player from current meta-progression.
 func build_player_fighter_state() -> FighterState:
-	var state := FighterState.new("Your Boxer", active_style)
+	var state := FighterState.new(player_name, active_style)
 	state.stat_levels = stat_levels.duplicate()
+	_apply_active_style_bonus(state.stat_levels)
 	for technique_id: String in equipped_technique_ids:
 		if ContentDB.techniques.has(technique_id):
 			state.equipped_techniques.append(ContentDB.techniques[technique_id])
@@ -202,3 +226,19 @@ func build_player_fighter_state() -> FighterState:
 			state.perks.append(ContentDB.perks[perk_id])
 	state.recompute_pools()
 	return state
+
+
+func _apply_active_style_bonus(target_stat_levels: Dictionary) -> void:
+	if active_style == null:
+		return
+	match active_style.primary_stat:
+		Technique.StatType.POWER:
+			target_stat_levels["power"] = target_stat_levels.get("power", 1) + ACTIVE_STYLE_STAT_BONUS
+		Technique.StatType.SPEED:
+			target_stat_levels["speed"] = target_stat_levels.get("speed", 1) + ACTIVE_STYLE_STAT_BONUS
+		Technique.StatType.VITALITY:
+			target_stat_levels["vitality"] = target_stat_levels.get("vitality", 1) + ACTIVE_STYLE_STAT_BONUS
+		Technique.StatType.UNIVERSAL:
+			var split: int = int(ACTIVE_STYLE_STAT_BONUS / 3.0)
+			for stat: String in ["power", "speed", "vitality"]:
+				target_stat_levels[stat] = target_stat_levels.get(stat, 1) + split

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ngsm8eup6v00"]
+[gd_scene load_steps=6 format=3 uid="uid://ngsm8eup6v00"]
 
 [ext_resource type="Script" uid="uid://b35yvj3ctrldc" path="res://scenes/fight/fight_screen.gd" id="1_fight_screen"]
 [ext_resource type="Texture2D" uid="uid://dblbiigydq0rq" path="res://assets/sprites/main_rat-removebg-preview.png" id="2_player_sprite"]
 [ext_resource type="Texture2D" uid="uid://dfmpgt6daleh5" path="res://assets/sprites/enemy_rat2-removebg-preview.png" id="3_opponent_sprite"]
-[ext_resource type="Texture2D" uid="uid://bvwfjcdh4qmu1" path="res://assets/fight_bg.png" id="4_fight_bg"]
+[ext_resource type="Texture2D" uid="uid://c3yuaxdtoiivd" path="res://assets/backgrounds/fight_building_bg.png" id="4_fight_bg"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/punch_impact.mp3" id="5_punch_sound"]
 
 [node name="FightScreen" type="Control"]
 layout_mode = 3
@@ -39,8 +40,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -15.0
-offset_bottom = -15.0
+offset_left = -95.0
+offset_top = -27.0
+offset_right = -95.0
+offset_bottom = -27.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -61,17 +64,51 @@ stretch_mode = 5
 [node name="OpponentSprite" type="TextureRect" parent="Arena"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.85
+anchor_left = 0.6
 anchor_top = 1.0
-anchor_right = 0.85
+anchor_right = 0.6
 anchor_bottom = 1.0
-offset_left = -124.0
+offset_left = -32.0
 offset_top = -64.0
-offset_right = -60.0
+offset_right = 32.0
 texture = ExtResource("3_opponent_sprite")
 expand_mode = 5
 stretch_mode = 5
 flip_h = true
+
+[node name="CombatLogPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+offset_left = 396.0
+offset_top = 16.0
+offset_right = 624.0
+offset_bottom = 344.0
+
+[node name="LogMargin" type="MarginContainer" parent="CombatLogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="LogLayout" type="VBoxContainer" parent="CombatLogPanel/LogMargin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeaderLabel" type="Label" parent="CombatLogPanel/LogMargin/LogLayout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.22, 0.26, 1)
+text = "Combat Log"
+horizontal_alignment = 1
+
+[node name="LogScroll" type="ScrollContainer" parent="CombatLogPanel/LogMargin/LogLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LogVBox" type="VBoxContainer" parent="CombatLogPanel/LogMargin/LogLayout/LogScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 0
@@ -79,7 +116,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
+theme_override_constants/margin_right = 260
 theme_override_constants/margin_bottom = 16
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
@@ -94,32 +131,74 @@ theme_override_constants/separation = 24
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="InfoRow" type="HBoxContainer" parent="Margin/VBox/HpRow/PlayerHpBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PlayerNameLabel" type="Label" parent="Margin/VBox/HpRow/PlayerHpBox/InfoRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Boxer  Lv. 1"
+
+[node name="PlayerStatBar" type="ProgressBar" parent="Margin/VBox/HpRow/PlayerHpBox/InfoRow"]
+custom_minimum_size = Vector2(48, 10)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Power: 1
+Speed: 1
+Vitality: 1"
+theme_type_variation = &"StatBar"
+max_value = 24.0
+value = 3.0
+show_percentage = false
+
 [node name="PlayerHpLabel" type="Label" parent="Margin/VBox/HpRow/PlayerHpBox"]
 layout_mode = 2
-text = "You: 0/0"
+text = "0/0"
 
 [node name="PlayerHpBar" type="ProgressBar" parent="Margin/VBox/HpRow/PlayerHpBox"]
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+show_percentage = false
 
 [node name="OpponentHpBox" type="VBoxContainer" parent="Margin/VBox/HpRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="InfoRow" type="HBoxContainer" parent="Margin/VBox/HpRow/OpponentHpBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="OpponentNameLabel" type="Label" parent="Margin/VBox/HpRow/OpponentHpBox/InfoRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Opponent"
+
+[node name="OpponentStatBar" type="ProgressBar" parent="Margin/VBox/HpRow/OpponentHpBox/InfoRow"]
+custom_minimum_size = Vector2(48, 10)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Power: 1
+Speed: 1
+Vitality: 1"
+theme_type_variation = &"StatBar"
+max_value = 24.0
+value = 3.0
+show_percentage = false
+
 [node name="OpponentHpLabel" type="Label" parent="Margin/VBox/HpRow/OpponentHpBox"]
 layout_mode = 2
-text = "Opponent: 0/0"
+text = "0/0"
 
 [node name="OpponentHpBar" type="ProgressBar" parent="Margin/VBox/HpRow/OpponentHpBox"]
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+show_percentage = false
 
 [node name="TitleLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
 text = "FIGHT!"
 horizontal_alignment = 1
-
-[node name="LogLabel" type="Label" parent="Margin/VBox"]
-layout_mode = 2
-autowrap_mode = 2
 
 [node name="OutcomeLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
@@ -127,7 +206,11 @@ horizontal_alignment = 1
 
 [node name="ContinueButton" type="Button" parent="Margin/VBox"]
 layout_mode = 2
+theme_type_variation = &"AccentButton"
 text = "Continue"
 
 [node name="EventTimer" type="Timer" parent="."]
 wait_time = 0.4
+
+[node name="PunchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_punch_sound")
